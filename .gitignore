@@ -1,0 +1,42 @@
+# ROS2 / colcon
+build/
+install/
+log/
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# CMake
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+Makefile
+
+# VSCode
+.vscode/
+
+# Linux / macOS
+*.swp
+.DS_Store
+
+# ROS bags / logs
+*.bag
+*.db3
+*.mcap
+*.log
+
+# Large model files
+*.pt
+*.pth
+*.onnx
+*.engine
+*.ckpt
+
+# Secrets
+.env
+*.key
+id_rsa*
+id_ed25519*
