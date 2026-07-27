@@ -1,13 +1,16 @@
 from ament_index_python.packages import get_package_share_directory
 from launch import LaunchDescription
-from launch.actions import IncludeLaunchDescription, GroupAction
+from launch.actions import DeclareLaunchArgument, IncludeLaunchDescription, GroupAction
+from launch.conditions import IfCondition
 from launch.launch_description_sources import PythonLaunchDescriptionSource
+from launch.substitutions import LaunchConfiguration
 from launch_ros.actions import Node
 import os
 
 
 def generate_launch_description():
     system_launch_share = get_package_share_directory('system_launch')
+    enable_realsense = LaunchConfiguration('enable_realsense')
 
     lakibeam_launch = os.path.join(
         get_package_share_directory('lakibeam1'),
@@ -34,6 +37,12 @@ def generate_launch_description():
     ))
 
     return LaunchDescription([
+        DeclareLaunchArgument(
+            'enable_realsense',
+            default_value='true',
+            description='Start the optional Intel RealSense D436 camera and image republisher.',
+        ),
+
         GroupAction(
             scoped=True,
             actions=[
@@ -54,6 +63,7 @@ def generate_launch_description():
 
         GroupAction(
             scoped=True,
+            condition=IfCondition(enable_realsense),
             actions=[
                 IncludeLaunchDescription(
                     PythonLaunchDescriptionSource(realsense_launch),
@@ -61,12 +71,12 @@ def generate_launch_description():
                         'camera_name': 'd436',
                         'camera_namespace': 'camera',
                         'enable_color': 'true',
-                        'enable_depth': 'true',
-                        'enable_gyro': 'true',
-                        'enable_accel': 'true',
+                        'enable_depth': 'false',
+                        'enable_gyro': 'false',
+                        'enable_accel': 'false',
                         'unite_imu_method': '2',
-                        'enable_sync': 'true',
-                        'align_depth.enable': 'true',
+                        'enable_sync': 'false',
+                        'align_depth.enable': 'false',
                         'pointcloud.enable': 'false',
                         'depth_module.depth_profile': '640x480x30',
                         'rgb_camera.color_profile': '640x480x30',
@@ -77,6 +87,7 @@ def generate_launch_description():
 
         GroupAction(
             scoped=True,
+            condition=IfCondition(enable_realsense),
             actions=[
                 Node(
                     package='image_transport',

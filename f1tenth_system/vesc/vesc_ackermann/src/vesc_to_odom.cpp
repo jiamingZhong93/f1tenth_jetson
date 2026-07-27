@@ -52,7 +52,7 @@ VescToOdom::VescToOdom(const rclcpp::NodeOptions & options)
   use_servo_cmd_(true),
   reverse_steering_(true),
   reverse_speed_(true),
-  publish_tf_(false),
+  publish_tf_(true),
   x_(0.0),
   y_(0.0),
   yaw_(0.0)
@@ -175,7 +175,7 @@ void VescToOdom::vescStateCallback(const VescStateStamped::SharedPtr state)
     TransformStamped tf;
     tf.header.frame_id = odom_frame_;
     tf.child_frame_id = base_frame_;
-    tf.header.stamp = now();
+    tf.header.stamp = odom.header.stamp;
     tf.transform.translation.x = x_;
     tf.transform.translation.y = y_;
     tf.transform.translation.z = 0.0;

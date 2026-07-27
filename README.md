@@ -15,3 +15,9 @@ source install/setup.bash
 ros2 launch system_launch full_stack.launch.py
 ```
 
+The RealSense D436 is optional and enabled by default. If you want to disable it, run:
+
+```bash
+ros2 launch system_launch full_stack.launch.py enable_realsense:=false
+```
+
